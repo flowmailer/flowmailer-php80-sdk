@@ -42,7 +42,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\UnicodeString;
 
-class Flowmailer extends Endpoints
+class Flowmailer extends Endpoints implements FlowmailerInterface
 {
     public const API_VERSION = 'v1.12';
 
@@ -86,7 +86,7 @@ class Flowmailer extends Endpoints
     private ?array $plugins = null;
 
     public function __construct(
-        private Options $options,
+        private OptionsInterface $options,
         private ?LoggerInterface $logger = null,
         private ?CacheInterface $cache = null,
         private ?ClientInterface $innerHttpClient = null,
@@ -109,13 +109,28 @@ class Flowmailer extends Endpoints
         parent::__construct($serializer ?? SerializerFactory::create());
     }
 
-    public static function init(string $accountId, string $clientId, string $clientSecret, array $options = [], ...$additionalArgs): self
+    public static function init(string $accountId, string $clientId, string $clientSecret, array $options = [], ...$additionalArgs): FlowmailerInterface
     {
         $options['account_id']    = $accountId;
         $options['client_id']     = $clientId;
         $options['client_secret'] = $clientSecret;
 
         return new self(new Options($options), ...$additionalArgs);
+    }
+
+    public function request($method, $path, array $parameters, ?string $type = null)
+    {
+        $parameters = new CustomRequestOptions($parameters);
+        $path       = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
+        $request    = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
+
+        $response   = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        if (is_null($type)) {
+            return $response;
+        }
+
+        return $this->serializer->deserialize($response, $type, 'json');
     }
 
     public function setAuthClient(?ClientInterface $authClient = null)
@@ -141,7 +156,7 @@ class Flowmailer extends Endpoints
         return $this->authClient;
     }
 
-    public function setHttpClient(?ClientInterface $httpClient = null): self
+    public function setHttpClient(?ClientInterface $httpClient = null): FlowmailerInterface
     {
         $this->innerHttpClient = $httpClient ?? $this->innerHttpClient ?? Psr18ClientDiscovery::find();
 
@@ -162,7 +177,7 @@ class Flowmailer extends Endpoints
         return $this->httpClient;
     }
 
-    public function setLogger(LoggerInterface $logger = null): self
+    public function setLogger(LoggerInterface $logger = null): FlowmailerInterface
     {
         $this->logger = $logger ?? new NullLogger();
 
@@ -189,7 +204,7 @@ class Flowmailer extends Endpoints
         return $this->streamFactory;
     }
 
-    public function withAccountId(string $id): self
+    public function withAccountId(string $id): FlowmailerInterface
     {
         return new Flowmailer(
             (clone $this->getOptions())->setAccountId($id),
@@ -323,6 +338,12 @@ class Flowmailer extends Endpoints
             $path = sprintf('%s;%s', $path, rawurldecode($matricesString));
         }
 
+        foreach ($query as $queryName => $queryValue) {
+            if ($queryValue instanceof \Stringable) {
+                $query[$queryName] = (string) $queryValue;
+            }
+        }
+
         $uri = $this->uriFactory->createUri(sprintf('%s%s', $base, $path));
         $uri = $uri->withQuery(http_build_query($query));
 
@@ -380,14 +401,14 @@ class Flowmailer extends Endpoints
     /**
      * @param array|Plugin[] $plugins
      */
-    protected function setPlugins(array $plugins): self
+    protected function setPlugins(array $plugins): FlowmailerInterface
     {
         $this->plugins = $plugins;
 
         return $this;
     }
 
-    protected function addPlugin(string $key, Plugin $plugin): self
+    protected function addPlugin(string $key, Plugin $plugin): FlowmailerInterface
     {
         $this->plugins = $this->getPlugins();
 
