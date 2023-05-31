@@ -37,7 +37,7 @@ final class CustomRequestOptions
         $this->options = $this->resolver->resolve($options);
     }
 
-    public function getBody(): null|string|ModelInterface|Collection
+    public function getBody(): null|string|array|ModelInterface|Collection
     {
         return $this->options['body'];
     }
@@ -65,7 +65,7 @@ final class CustomRequestOptions
     private function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('body', null);
-        $resolver->setAllowedTypes('body', ['null', 'string', ModelInterface::class, Collection::class]);
+        $resolver->setAllowedTypes('body', ['null', 'string', 'array', ModelInterface::class, Collection::class]);
 
         $resolver->setDefault('path', []);
         $resolver->setAllowedTypes('path', ['array']);
