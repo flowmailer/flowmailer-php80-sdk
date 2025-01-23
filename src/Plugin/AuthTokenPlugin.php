@@ -34,7 +34,7 @@ class AuthTokenPlugin implements Plugin
         private FlowmailerInterface $client,
         private OptionsInterface $options,
         ?CacheInterface $cache = null,
-        private int $maxRetries = 3
+        private int $maxRetries = 3,
     ) {
         $this->retriesLeft = $maxRetries;
         $this->cache       = $cache ?? new Psr16Cache(new ArrayAdapter());

@@ -25,7 +25,7 @@ class SubmitMessageQueue
     public function __construct(
         private FlowmailerInterface $api,
         private SimpleClient $client,
-        private string $topic = 'flowmailer_messages'
+        private string $topic = 'flowmailer_messages',
     ) {
     }
 

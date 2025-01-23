@@ -67,7 +67,7 @@ interface EndpointsInterface
         $clientId,
         $clientSecret,
         $grantType,
-        $scope = 'api'
+        $scope = 'api',
     ): RequestInterface;
 
     /**
@@ -230,7 +230,9 @@ interface EndpointsInterface
     /**
      * Deserialize the responseData for getEventFlowRulesHierarchy.
      */
-    public function processResponseDataForGetEventFlowRulesHierarchy(ResponseData $response): FlowRuleHierarchyItemCollection;
+    public function processResponseDataForGetEventFlowRulesHierarchy(
+        ResponseData $response,
+    ): FlowRuleHierarchyItemCollection;
 
     /**
      * Create the RequestInterface for getEventFlows.
@@ -361,7 +363,7 @@ interface EndpointsInterface
      */
     public function createRequestForUpdateEventFlowRule(
         $eventFlowId,
-        EventFlowRuleSimple $eventFlowRuleSimple
+        EventFlowRuleSimple $eventFlowRuleSimple,
     ): RequestInterface;
 
     /**
@@ -383,7 +385,7 @@ interface EndpointsInterface
     public function createRequestForGetFilters(
         ReferenceRange $range,
         ?DateRange $daterange = null,
-        ?string $sortorder = null
+        ?string $sortorder = null,
     ): RequestInterface;
 
     /**
@@ -392,7 +394,7 @@ interface EndpointsInterface
     public function getFilters(
         ReferenceRange $range,
         ?DateRange $daterange = null,
-        ?string $sortorder = null
+        ?string $sortorder = null,
     ): FilterCollection;
 
     /**
@@ -577,7 +579,7 @@ interface EndpointsInterface
         ItemsRange $range,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -589,7 +591,7 @@ interface EndpointsInterface
         ItemsRange $range,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): MessageCollection;
 
     /**
@@ -649,7 +651,11 @@ interface EndpointsInterface
      * @param DateRange $daterange Date range the messages were submitted in
      * @param int       $interval  Time difference between samples
      */
-    public function createRequestForGetFlowStats($flowId, DateRange $daterange, ?int $interval = null): RequestInterface;
+    public function createRequestForGetFlowStats(
+        $flowId,
+        DateRange $daterange,
+        ?int $interval = null,
+    ): RequestInterface;
 
     /**
      * Get time based message statistics for a message flow.
@@ -683,7 +689,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addmessagetags = false,
         ?DateRange $daterange = null,
-        ?DateRange $receivedrange = null
+        ?DateRange $receivedrange = null,
     ): RequestInterface;
 
     /**
@@ -698,7 +704,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addmessagetags = false,
         ?DateRange $daterange = null,
-        ?DateRange $receivedrange = null
+        ?DateRange $receivedrange = null,
     ): MessageEventCollection;
 
     /**
@@ -775,7 +781,7 @@ interface EndpointsInterface
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false,
-        ?DateRange $daterange = null
+        ?DateRange $daterange = null,
     ): RequestInterface;
 
     /**
@@ -792,7 +798,7 @@ interface EndpointsInterface
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false,
-        ?DateRange $daterange = null
+        ?DateRange $daterange = null,
     ): MessageCollection;
 
     /**
@@ -870,7 +876,7 @@ interface EndpointsInterface
     public function createRequestForGetMessageArchive(
         $messageId,
         ?bool $addattachments = false,
-        ?bool $adddata = false
+        ?bool $adddata = false,
     ): RequestInterface;
 
     /**
@@ -879,7 +885,7 @@ interface EndpointsInterface
     public function getMessageArchive(
         $messageId,
         ?bool $addattachments = false,
-        ?bool $adddata = false
+        ?bool $adddata = false,
     ): MessageArchiveCollection;
 
     /**
@@ -922,7 +928,7 @@ interface EndpointsInterface
     public function createRequestForGetMessageErrorArchive(
         $messageId,
         ?bool $addattachments = false,
-        ?bool $adddata = false
+        ?bool $adddata = false,
     ): RequestInterface;
 
     /**
@@ -931,7 +937,7 @@ interface EndpointsInterface
     public function getMessageErrorArchive(
         $messageId,
         ?bool $addattachments = false,
-        ?bool $adddata = false
+        ?bool $adddata = false,
     ): MessageArchive;
 
     /**
@@ -970,7 +976,7 @@ interface EndpointsInterface
     public function createRequestForGetMessageStats(
         DateRange $daterange,
         ?array $flowIds = null,
-        ?int $interval = null
+        ?int $interval = null,
     ): RequestInterface;
 
     /**
@@ -1031,7 +1037,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -1044,7 +1050,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): MessageCollection;
 
     /**
@@ -1093,7 +1099,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -1106,7 +1112,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): MessageCollection;
 
     /**
@@ -1363,7 +1369,7 @@ interface EndpointsInterface
         ItemsRange $range,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -1375,7 +1381,7 @@ interface EndpointsInterface
         ItemsRange $range,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): MessageCollection;
 
     /**
@@ -1398,7 +1404,7 @@ interface EndpointsInterface
     public function createRequestForGetSourceStats(
         $sourceId,
         DateRange $daterange,
-        ?int $interval = null
+        ?int $interval = null,
     ): RequestInterface;
 
     /**
@@ -1541,7 +1547,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -1554,7 +1560,7 @@ interface EndpointsInterface
         ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): MessageCollection;
 
     /**
@@ -1678,7 +1684,7 @@ interface EndpointsInterface
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): RequestInterface;
 
     /**
@@ -1692,7 +1698,7 @@ interface EndpointsInterface
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
     ): BouncedMessageCollection;
 
     /**

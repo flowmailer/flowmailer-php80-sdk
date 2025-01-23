@@ -12,7 +12,7 @@ namespace Flowmailer\API\Utility;
 class PdoGeneratorFactory
 {
     public function __construct(
-        private \PDO $pdo
+        private \PDO $pdo,
     ) {
     }
 

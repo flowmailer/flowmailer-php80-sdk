@@ -104,7 +104,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         ?RequestFactoryInterface $requestFactory = null,
         ?UriFactoryInterface $uriFactory = null,
         ?StreamFactoryInterface $streamFactory = null,
-        ?SerializerInterface $serializer = null
+        ?SerializerInterface $serializer = null,
     ) {
         $this->logger ??= new NullLogger();
 
